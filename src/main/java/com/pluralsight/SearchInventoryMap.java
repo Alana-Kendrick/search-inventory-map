@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -27,8 +29,24 @@ public class SearchInventoryMap {
     }
 
     private static void loadInventory(){
-        // Your code should be here
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("inventory.csv"));
+            String line;
+            Product item;
 
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                int id = Integer.parseInt(parts[0]);
+                String name = parts[1];
+                double price = Double.parseDouble(parts[2]);
+
+                inventory.put(id, new Product(id, name, price));
+            }
+
+            reader.close();
+        } catch (Exception e) {
+            System.out.println("Something went wrong!");
+        }
     }
 
 }
